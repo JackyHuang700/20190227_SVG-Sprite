@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <%- include ClientApp/ejs/index_2/public/globalHead.ejs %>  
+  <body>
+    <%- include ClientApp/ejs/index_2/public/globalStyle.ejs %>  
+
+    <%if (htmlWebpackPlugin.options.outputFile.isProd) {%> <% for (var css in
+    htmlWebpackPlugin.files.css) { %>
+    <link
+      href="wwwroot/dist<%= htmlWebpackPlugin.files.css[css] %>"
+      rel="stylesheet"
+    />
+    <% } %> <% } %>
+
+    <!-- pre-setting vendor -->
+    <%- include ClientApp/ejs/index_2/public/vendor.ejs %>
+
+    <!-- path是相對於運行webpack的位置 -->
+    <%- include ClientApp/ejs/index_2/public/header.ejs %>
+    <!-- Here is our page's main content -->
+    <main id="app">
+      <!--
+        https://www.youtube.com/watch?v=DpLBmC4YEbM
+        https://muki.tw/tech/css-to-svg-sprite/ - 教學
+      -->
+      <h3 class="text-center mt-3">SVG Sprite</h3>
+      <h4 class="text-center mt-3">Note: xlink:href不支援絕對路徑(包含HTTPS)</h4>
+      <div class="svg">
+        <svg class="facebook" xmlns="http://www.w3.org/2000/svg">
+          <use xlink:href="wwwroot/images/b874ec50/sprite.svg#icon-facebook"></use>
+        </svg>
+      </div>
+      <div class="svg">
+        <svg class="instagram" xmlns="http://www.w3.org/2000/svg">
+          <use xlink:href="wwwroot/images/b874ec50/sprite.svg#icon-instagram"></use>
+        </svg>
+      </div>
+    </main>
+
+    <!-- path是相對於運行webpack的位置 -->
+    <%- include ClientApp/ejs/index_2/public/footer.ejs %>
+
+    <%- include ClientApp/ejs/index_2/public/globalScript.ejs %> 
+
+    <script src="<%= htmlWebpackPlugin.options.outputFile.vendor %>"></script>
+
+    <%if (htmlWebpackPlugin.options.outputFile.isProd) {%> <% for (var chunk in
+    htmlWebpackPlugin.files.chunks) { %>
+    <script src="wwwroot/dist<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% } %> <%} else {%> <% for (var chunk in htmlWebpackPlugin.files.chunks) {
+    %>
+    <script src="http://localhost:<%= htmlWebpackPlugin.options.outputFile.port %><%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% } %> <% } %>
+
+  </body>
+</html>
